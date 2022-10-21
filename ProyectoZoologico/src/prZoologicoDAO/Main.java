@@ -21,6 +21,11 @@ public class Main {
 			
 			System.out.println(animales.get(i));
 		}
+		
+		//MODIFICAR ANIMAL
+		Animal a = AnimalDAO.buscarAnimalID(4);
+		a.setHabitat("modificado");
+		AnimalDAO.modificarAnimal(a);
 	}
 
 }
