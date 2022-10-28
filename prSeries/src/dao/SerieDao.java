@@ -2,10 +2,12 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import pojo.Serie;
+
 import utils.DataBaseConnection;
 
 public class SerieDao implements Dao<Serie> {
@@ -22,12 +24,8 @@ public class SerieDao implements Dao<Serie> {
 			ps.setString(1, serie.getTitulo());
 			ps.setInt(2, serie.getEdad());
 			ps.setString(3, serie.getPlataforma());
-			
+
 			ps.executeUpdate();
-			
-			
-			
-			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -37,9 +35,9 @@ public class SerieDao implements Dao<Serie> {
 		closeConnection();
 
 	}
-	
+
 	public SerieDao() {
-		
+
 	}
 
 	@Override
@@ -62,8 +60,25 @@ public class SerieDao implements Dao<Serie> {
 
 	@Override
 	public Serie buscarPorId(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		Serie serie = null;
+		try {
+			connection = openConnection();
+			String query = "Select * from series where id=?";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1, i);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				serie = new Serie(rs.getInt("id"), rs.getInt("edad"), rs.getString("titulo"),
+						rs.getString("plataforma"), null);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+		return serie;
 	}
 
 	private static Connection openConnection() {
