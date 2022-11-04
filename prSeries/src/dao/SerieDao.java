@@ -7,12 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import pojo.Serie;
-
+import pojo.Temporada;
 import utils.DataBaseConnection;
 
-public class SerieDao implements Dao<Serie> {
-
-	private static Connection connection;
+public class SerieDao extends ObjetoDao implements InterfazDao<Serie> {
 
 	@Override
 	public void insertar(Serie serie) {
@@ -42,20 +40,109 @@ public class SerieDao implements Dao<Serie> {
 
 	@Override
 	public void modificar(Serie t) {
-		// TODO Auto-generated method stub
+		try {
+			connection = openConnection();
+			String query = "update series set titulo=?, edad=?, plataforma=? where id = ?";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setString(1, t.getTitulo());
+			ps.setInt(2, t.getEdad());
+			ps.setString(3, t.getPlataforma());
+			ps.setInt(4, t.getId());
 
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		closeConnection();
+
+	}
+
+	public ArrayList<Temporada> obetenerTemporadas(Serie serie) {
+		ArrayList<Temporada> temporadas = new ArrayList<>();
+		try {
+			
+			connection = openConnection();
+
+			String query = "select * from temporadas where serie_id=?";
+
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1, serie.getId());
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				Temporada temporada = new Temporada(rs.getInt("id"), rs.getInt("num_temporada"), rs.getString("titulo"),
+						serie);
+				
+				temporadas.add(temporada);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		closeConnection();
+		
+		return temporadas;
 	}
 
 	@Override
 	public void borrar(Serie t) {
-		// TODO Auto-generated method stub
 
+		ArrayList<Temporada> temporadas = obetenerTemporadas(t);
+		TemporadaDao tD = new TemporadaDao();
+		for(Temporada temporada : temporadas) {
+		
+			tD.borrar(temporada);
+			
+		}
+		try {
+		connection = openConnection();
+
+		
+		String query = "delete from series where id=?";
+
+		PreparedStatement ps = connection.prepareStatement(query);
+		ps.setInt(1, t.getId());
+		ps.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	closeConnection();
+
+		
+		
+		
 	}
 
 	@Override
-	public ArrayList<Serie> buscarTodos(Serie t) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Serie> buscarTodos() {
+
+		connection = openConnection();
+		ArrayList<Serie> series = new ArrayList<Serie>();
+		Serie serie = null;
+		try {
+			String query = "Select * from series";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				serie = new Serie(rs.getInt("id"), rs.getInt("edad"), rs.getString("titulo"),
+						rs.getString("plataforma"), null);
+
+				series.add(serie);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+		return series;
 	}
 
 	@Override
@@ -79,24 +166,6 @@ public class SerieDao implements Dao<Serie> {
 		}
 		closeConnection();
 		return serie;
-	}
-
-	private static Connection openConnection() {
-
-		DataBaseConnection dbconnection = new DataBaseConnection();
-		connection = dbconnection.getConnection();
-		return connection;
-	}
-
-	private static void closeConnection() {
-		try {
-			connection.close();
-			connection = null;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 }
