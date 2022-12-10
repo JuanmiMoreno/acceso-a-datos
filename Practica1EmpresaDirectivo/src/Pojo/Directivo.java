@@ -33,6 +33,16 @@ public class Directivo {
 		this.correo = correo;
 		this.empresa = empresa;
 	}
+	
+	public Directivo(int id, String nombre, String apellido, String dni, String correo) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+		this.correo = correo;
+		
+	}
 
 
 	public String getNombre() {
@@ -100,8 +110,11 @@ public class Directivo {
 
 	@Override
 	public String toString() {
-		return "Directivo [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo="
-				+ correo + ", Nomnbre de la empresa=" + empresa.getNombre() ;
+		return "Nombre: "+this.nombre+"\n"+
+				"Apellido: "+this.apellido+"\n"+
+				"DNI: "+this.dni+"\n"+
+				"Correo: "+this.correo+"\n";
+				//"Nombre de la empresa: "+this.empresa.getNombre()+"\n";
 	}
 	
 	

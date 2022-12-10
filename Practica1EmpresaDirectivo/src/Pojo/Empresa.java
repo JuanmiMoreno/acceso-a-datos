@@ -86,7 +86,7 @@ public class Empresa {
 
 	@Override
 	public String toString() {
-		return "Empresa [id=" + id + ", nombre=" + nombre + ", cif=" + cif + ", presupuesto=" + presupuesto + "]";
+		return "Empresa: "+ this.getNombre()+"\n\tID: "+this.id+"\n\tCIF: "+this.cif+"\n\tPresupuesto: "+this.presupuesto;
 	}
 	
 	

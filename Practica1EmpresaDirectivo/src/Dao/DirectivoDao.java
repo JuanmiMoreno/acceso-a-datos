@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import Dao.InterfazDao;
 import Dao.ObjetoDao;
 import Pojo.Directivo;
-
-
+import Pojo.Empresa;
 
 public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
@@ -61,8 +60,6 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
 	}
 
-	
-	
 	@Override
 	public void borrar(Directivo directivo) {
 		try {
@@ -80,11 +77,9 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 		closeConnection();
 	}
 
-	
-	
 	@Override
 	public ArrayList<Directivo> buscarTodos() {
-		
+
 		connection = openConnection();
 		ArrayList<Directivo> directivos = new ArrayList<Directivo>();
 		Directivo directivo = null;
@@ -93,8 +88,8 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 			PreparedStatement ps = connection.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				directivo = new Directivo(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellido"),rs.getString(("dni")),
-						rs.getString("correo"), null);
+				directivo = new Directivo(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellido"),
+						rs.getString(("dni")), rs.getString("correo"));
 
 				directivos.add(directivo);
 			}
@@ -104,12 +99,55 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 		}
 		closeConnection();
 		return directivos;
-	
+
 	}
 
-	
-	
-	
+	@Override
+	public Directivo buscarPorId(int id) {
+		Directivo directivo = null;
+		try {
+			connection = openConnection();
+			String query = "Select * from directivos where id=?";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				directivo = new Directivo(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellido"),
+						rs.getString("dni"), rs.getString("correo"));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+		return directivo;
+	}
+
+	public ArrayList<Directivo> buscarPorApellido() {
+
+		connection = openConnection();
+		ArrayList<Directivo> directivos = new ArrayList<Directivo>();
+		Directivo directivo = null;
+		try {
+			String query = "Select * from directivos where apellido=?";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setString(1, "Marin");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				directivo = new Directivo(rs.getInt("id"), rs.getString("nombre"), rs.getString("apellido"),
+						rs.getString(("dni")), rs.getString("correo"));
+
+				directivos.add(directivo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+		return directivos;
+	}
 
 	public void borrarPorEmpresa(int empresaId) {
 
@@ -129,10 +167,19 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
 	}
 
-	@Override
-	public Directivo buscarPorId(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public void resetAutoIncrement() {
+		try {
+			connection = openConnection();
+			String query = "alter table  directivos AUTO_INCREMENT=1;";
+			PreparedStatement ps = connection.prepareStatement(query);
 
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		closeConnection();
+	}
 }

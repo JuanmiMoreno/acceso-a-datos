@@ -13,6 +13,7 @@ import Pojo.Empresa;
 
 
 
+
 public class EmpresaDao extends ObjetoDao implements InterfazDao<Empresa> {
 
 	@Override
@@ -92,9 +93,24 @@ public class EmpresaDao extends ObjetoDao implements InterfazDao<Empresa> {
 			PreparedStatement ps = connection.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
+				ArrayList<Directivo> directivos = new ArrayList<Directivo>();
+				
 				empresa = new Empresa(rs.getInt("id"), rs.getString("nombre"), rs.getString("cif"),
 						rs.getFloat("presupuesto"), null);
-
+				
+				String queryDirectivo ="select * from directivos where empresa_id = ?";
+				PreparedStatement psDirectivo = connection.prepareStatement(queryDirectivo);
+				psDirectivo.setInt(1, rs.getInt("id"));
+				ResultSet rsDirectivo = psDirectivo.executeQuery();
+				
+				while(rsDirectivo.next()) {
+					Directivo directivo = new Directivo(rsDirectivo .getInt("id"),rsDirectivo .getString("nombre"),
+							rsDirectivo .getString("apellido"), rsDirectivo.getString("dni"),rsDirectivo.getString("correo") );
+				
+					directivos.add(directivo);
+				}
+				
+				empresa.setTotalDirectivos(directivos);
 				empresas.add(empresa);
 			}
 		} catch (SQLException e) {
@@ -164,6 +180,22 @@ public class EmpresaDao extends ObjetoDao implements InterfazDao<Empresa> {
 		}
 		closeConnection();
 		return empresa;
+	}
+	
+	public void resetAutoIncrement() {
+		try {
+			connection = openConnection();
+			String query = "alter table  empresas AUTO_INCREMENT=1;";
+			PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		closeConnection();
 	}
 
 }
