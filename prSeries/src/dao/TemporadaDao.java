@@ -36,7 +36,7 @@ public class TemporadaDao extends ObjetoDao implements InterfazDao<Temporada> {
 
 	@Override
 	public void modificar(Temporada t) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -71,6 +71,24 @@ public class TemporadaDao extends ObjetoDao implements InterfazDao<Temporada> {
 	public Temporada buscarPorId(int i) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void borrarPorSerie(int serieId) {
+
+		connection = openConnection();
+
+		String query = "DELETE  FROM temporadas where serie_id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1, serieId);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+
 	}
 
 }

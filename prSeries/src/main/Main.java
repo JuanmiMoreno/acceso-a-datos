@@ -11,9 +11,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-//		//Serie serie = new Serie(7,"los simpson","Disney Plus");
+Serie serie = new Serie(7,"los simpson","Disney Plus");
 	SerieDao serieDao = new SerieDao();
-//		//serieDao.insertar(serie);
+serieDao.insertar(serie);
 //		//System.out.println(serieDao.buscarPorId(2));
 //		
 //		Serie serie = serieDao.buscarPorId(3);
@@ -26,9 +26,9 @@ public class Main {
 		//Serie s = new Serie (12, "The Mandalorian",  "Disney plus");
 		//serieDao.insertar(s);
 		
-		Serie losSimpson = serieDao.buscarPorId(3);
-		losSimpson.setPlataforma("Netflix");
-		serieDao.modificar(losSimpson);
+		//Serie losSimpson = serieDao.buscarPorId(3);
+		//losSimpson.setPlataforma("Netflix");
+		//serieDao.modificar(losSimpson);
 		
 		/*ArrayList<Serie>series = serieDao.buscarTodos();
 		
@@ -36,10 +36,23 @@ public class Main {
 			System.out.println(serie);
 		}*/
 		
-		ArrayList<Temporada> temporadas = serieDao.obetenerTemporadas(losSimpson);
+		/*ArrayList<Temporada> temporadas = serieDao.obetenerTemporadas(losSimpson);
 		for(Temporada temporada : temporadas) {
 			System.out.println(temporada);
-		}
+		}*/
+		
+		//*SerieDao serieDao = new SerieDao();
+		/*TemporadaDao temporadaDao = new TemporadaDao();
+		
+		Serie serie = serieDao.buscarPorId(3);
+		Temporada t1 = new Temporada(3, "La Lisa to lista", serie);
+		//temporadaDao.insertar(t1);
+		serieDao.borrar(serie);
+		*/
+		
+		
+		
+		
 	}
 
 }
