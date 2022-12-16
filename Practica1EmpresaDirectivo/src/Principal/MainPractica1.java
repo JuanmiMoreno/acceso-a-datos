@@ -19,6 +19,7 @@ public class MainPractica1 {
 		System.out.println("Vamos a insertar una empresa en base de datos\n");
 		Empresa empresa = new Empresa("Agricolas Moreno", "12345678K",(float) 1234567812);
 		EmpresaDao empresaDao = new EmpresaDao();
+		empresaDao.vaciarTablas();
 		empresaDao.resetAutoIncrement();
 		empresaDao.insertar(empresa);
 		

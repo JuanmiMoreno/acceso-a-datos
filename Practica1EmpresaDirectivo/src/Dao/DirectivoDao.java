@@ -9,9 +9,17 @@ import Dao.InterfazDao;
 import Dao.ObjetoDao;
 import Pojo.Directivo;
 import Pojo.Empresa;
-
+/**
+ * Clase con las funciones para insertar, modificar y consultar en la base de datos
+ * @author Juanmi
+ *
+ */
 public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
+	/**
+	 * Funcion que sirve para insertar un directivo en la base de datos, muestra un error si no
+	 * se puede insertar 
+	 */
 	@Override
 	public void insertar(Directivo directivo) {
 		connection = openConnection();
@@ -37,6 +45,10 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
 	}
 
+	/**
+	 * Funcion que sirve para modificar un dato en la base de datos, si no puede modificar 
+	 * muestra un error
+	 */
 	@Override
 	public void modificar(Directivo directivo) {
 		try {
@@ -60,6 +72,9 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
 	}
 
+	/**
+	 * Funcion que sirve para borrar un dato de la tabla, si no funciona muestra un error
+	 */
 	@Override
 	public void borrar(Directivo directivo) {
 		try {
@@ -77,7 +92,13 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 		closeConnection();
 	}
 
+
 	@Override
+	/**
+	 * Funcion que sirve para mostrar todos los directivos que haya en la tabla directivos. 
+	 * Si no funciona muestra un error
+	 * @return devuelve un arraylist con todos los directivos
+	 */
 	public ArrayList<Directivo> buscarTodos() {
 
 		connection = openConnection();
@@ -103,6 +124,11 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 	}
 
 	@Override
+	/**
+	 * Funcion que busca un directivo segun id
+	 * @param id. es el id del directivo que busca
+	 * @return devuelve el directivo con el id buscado
+	 */
 	public Directivo buscarPorId(int id) {
 		Directivo directivo = null;
 		try {
@@ -124,7 +150,11 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 		closeConnection();
 		return directivo;
 	}
-
+	
+	/**
+	 * Funcion que busca los directivos con apellidos = a marin
+	 * @return devuelve un arraylist con los directivos que tienen el apellido marin
+	 */
 	public ArrayList<Directivo> buscarPorApellido() {
 
 		connection = openConnection();
@@ -149,6 +179,10 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 		return directivos;
 	}
 
+	/**
+	 * Funcion que borra el directivo con el id de la emprsa
+	 * @param empresaId id de la empresa a la que pertenece
+	 */
 	public void borrarPorEmpresa(int empresaId) {
 
 		connection = openConnection();
@@ -167,6 +201,9 @@ public class DirectivoDao extends ObjetoDao implements InterfazDao<Directivo> {
 
 	}
 
+	/**
+	 * Funcion que resetea el auto incremet a 1
+	 */
 	public void resetAutoIncrement() {
 		try {
 			connection = openConnection();

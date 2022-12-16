@@ -4,7 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import Utils.DataBaseConnection;
-
+/**
+ * Funcion que sirve para abrir y cerrar la conexion con la base de datos
+ * @author Juanmi
+ *
+ */
 public class ObjetoDao {
 
 	protected static Connection connection;
